@@ -1,0 +1,5 @@
+General utility scripts to help with daily programming.
+
+1. indx : a shebang type line close to the top of your program
+          beginning with #$. indx builds an index out of these 
+          lines. 
