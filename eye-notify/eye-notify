@@ -1,0 +1,26 @@
+#! /bin/bash
+# Author: Dipanjan Mukherjee
+# Purpose: 
+#   eye-notify reminds you to rest your eyes after you have been using
+#   your computer screen for a configurable time. 
+
+NOTIFICATION_DURATION=4     # time in seconds
+INTERVAL=30                 # time in minutes after which to notify
+
+NOTIFICATION_TITLE="Time to rest your eyes"
+NOTIFICATION_BODY="You have been using this screen for quite some time\
+    now. You should stop for some time."
+
+
+notify() {
+   notify-send --expire-time=`echo $NOTIFICATION_DURATION*1000|bc`\
+   --urgency=critical "$NOTIFICATION_TITLE" "$NOTIFICATION_BODY";
+}
+
+let "INTERVAL_SECONDS = $INTERVAL * 60" # convert INTERVAL to seconds
+
+while [ 1 -eq 1 ]; do
+    # main loop
+    sleep $INTERVAL_SECONDS;
+    notify;
+done
