@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+# Use as a git post-receive hook on your server to test newly pushed
+# releases and to deploy them immediately. Checks config and restarts
+# for nginx.
+
+# Author: Dipanjan Mukherjee ( dipanjan.mu@gmail.com )
+#         github: http://github.com/schatten
+
+
+ROLLBACK_COMMIT=`git rev-parse HEAD`
+
+git checkout master;
+umask 002 && git reset --hard HEAD;
+
+cd .. # because we want to be in the project root 
+
+if /etc/init.d/nginx configtest; then
+  # restart nginx
+  umask 002 && /etc/init.d/nginx restart
+  
+  # restart fcgi
+  umask 002 && python manage.py runfcgi host=127.0.0.1 port=8080 --settings=prodsettings
+else
+  git reset --hard $ROLLBACK_COMMIT
+fi
+
+
