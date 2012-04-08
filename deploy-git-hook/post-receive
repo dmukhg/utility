@@ -11,7 +11,7 @@
 ROLLBACK_COMMIT=`git rev-parse HEAD`
 
 git checkout master;
-umask 002 && git reset --hard HEAD;
+umask 002 && git reset --hard;
 
 cd .. # because we want to be in the project root 
 
